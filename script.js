@@ -79,17 +79,58 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 500);
     }
     
-    // Download button interactions
-    const downloadButtons = document.querySelectorAll('.btn-download');
+    // Download Modal functionality
+    const downloadModal = document.getElementById('downloadModal');
+    const modalClose = document.getElementById('modalClose');
+    const modalOverlay = document.querySelector('.modal-overlay');
     
-    downloadButtons.forEach(button => {
+    // Open modal for Windows download
+    const windowsDownloadBtn = document.querySelector('.download-card:first-child .btn-download');
+    if (windowsDownloadBtn) {
+        windowsDownloadBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            openDownloadModal();
+        });
+    }
+    
+    // Close modal functions
+    const closeDownloadModal = () => {
+        downloadModal.classList.remove('active');
+        document.body.style.overflow = '';
+    };
+    
+    const openDownloadModal = () => {
+        downloadModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    };
+    
+    // Close modal events
+    modalClose.addEventListener('click', closeDownloadModal);
+    modalOverlay.addEventListener('click', closeDownloadModal);
+    
+    // Close modal on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && downloadModal.classList.contains('active')) {
+            closeDownloadModal();
+        }
+    });
+    
+    // Download option buttons
+    const downloadOptionButtons = document.querySelectorAll('.btn-download-option');
+    
+    downloadOptionButtons.forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault();
             
-            // Add download animation
+            const downloadType = this.getAttribute('data-type');
             const originalText = this.textContent;
+            
+            // Add download animation
             this.textContent = 'Загрузка...';
             this.style.background = '#4a5568';
+            
+            // Start download immediately
+            startDownload(downloadType);
             
             setTimeout(() => {
                 this.textContent = 'Скачано!';
@@ -99,8 +140,78 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 this.textContent = originalText;
                 this.style.background = '';
+                closeDownloadModal();
             }, 3000);
         });
+    });
+    
+    // Function to start download from GitHub releases
+    const startDownload = async (downloadType) => {
+        try {
+            // Get latest release info from GitHub API
+            const response = await fetch('https://api.github.com/repos/Grossbeak/Vuzhyk/releases/latest');
+            const release = await response.json();
+            
+            let downloadUrl = '';
+            let fileName = '';
+            
+            if (downloadType === 'installer') {
+                fileName = 'Vuzhyk-installer.exe';
+            } else if (downloadType === 'portable') {
+                fileName = 'Vuzhyk-portable.zip';
+            }
+            
+            // Find the asset with the matching filename
+            const asset = release.assets.find(asset => asset.name === fileName);
+            
+            if (asset) {
+                downloadUrl = asset.browser_download_url;
+                
+                // Create a temporary link and trigger download
+                const link = document.createElement('a');
+                link.href = downloadUrl;
+                link.download = fileName;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                console.log(`Downloading ${fileName} from ${downloadUrl}`);
+            } else {
+                console.error(`File ${fileName} not found in latest release`);
+                // Fallback to releases page
+                window.open('https://github.com/Grossbeak/Vuzhyk/releases/latest', '_blank');
+            }
+        } catch (error) {
+            console.error('Error fetching release info:', error);
+            // Fallback to releases page
+            window.open('https://github.com/Grossbeak/Vuzhyk/releases/latest', '_blank');
+        }
+    };
+    
+    // Other download buttons (Linux - disabled)
+    const otherDownloadButtons = document.querySelectorAll('.btn-download:not(.disabled)');
+    
+    otherDownloadButtons.forEach(button => {
+        if (button !== windowsDownloadBtn) {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Add download animation for non-Windows
+                const originalText = this.textContent;
+                this.textContent = 'Загрузка...';
+                this.style.background = '#4a5568';
+                
+                setTimeout(() => {
+                    this.textContent = 'Скачано!';
+                    this.style.background = '#38a169';
+                }, 1500);
+                
+                setTimeout(() => {
+                    this.textContent = originalText;
+                    this.style.background = '';
+                }, 3000);
+            });
+        }
     });
     
     // Mobile menu functionality
