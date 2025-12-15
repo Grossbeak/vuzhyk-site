@@ -762,13 +762,13 @@ html {
     width: 100%;
     height: 100%;
     z-index: 2000;
-    display: none;
+    display: none !important;
     opacity: 0;
     transition: opacity 0.3s ease;
 }
 
 .download-modal.active {
-    display: flex;
+    display: flex !important;
     opacity: 1;
 }
 
@@ -924,13 +924,13 @@ html {
     width: 100%;
     height: 100%;
     z-index: 2000;
-    display: none;
+    display: none !important;
     opacity: 0;
     transition: opacity 0.3s ease;
 }
 
 .demo-modal.active {
-    display: flex;
+    display: flex !important;
     opacity: 1;
 }
 
