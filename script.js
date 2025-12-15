@@ -288,6 +288,47 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize mobile menu
     initMobileMenu();
     
+    // Demo Modal functionality
+    const demoModal = document.getElementById('demoModal');
+    const demoModalClose = document.getElementById('demoModalClose');
+    const demoButton = document.querySelector('a[href="#demo"]');
+    
+    // Open demo modal
+    if (demoButton) {
+        demoButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            openDemoModal();
+        });
+    }
+    
+    // Close demo modal functions
+    const closeDemoModal = () => {
+        demoModal.classList.remove('active');
+        document.body.style.overflow = '';
+    };
+    
+    const openDemoModal = () => {
+        demoModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    };
+    
+    // Close demo modal events
+    if (demoModalClose) {
+        demoModalClose.addEventListener('click', closeDemoModal);
+    }
+    
+    if (demoModal) {
+        const demoOverlay = demoModal.querySelector('.modal-overlay');
+        demoOverlay.addEventListener('click', closeDemoModal);
+    }
+    
+    // Close demo modal on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && demoModal && demoModal.classList.contains('active')) {
+            closeDemoModal();
+        }
+    });
+    
     // Parallax effect for hero section
     window.addEventListener('scroll', () => {
         const scrolled = window.pageYOffset;

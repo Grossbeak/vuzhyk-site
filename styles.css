@@ -711,6 +711,22 @@ body {
     .btn-download-option {
         width: 100%;
     }
+    
+    .demo-modal-content {
+        max-width: 95%;
+    }
+    
+    .demo-icon {
+        font-size: 3rem;
+    }
+    
+    .demo-message h4 {
+        font-size: 1.25rem;
+    }
+    
+    .demo-link {
+        padding: 0.875rem 1.25rem;
+    }
 }
 
 /* Animations */
@@ -898,6 +914,85 @@ html {
 .btn-download-option:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(55, 190, 253, 0.3);
+}
+
+/* Demo Modal */
+.demo-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2000;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.demo-modal.active {
+    display: flex;
+    opacity: 1;
+}
+
+.demo-modal-content {
+    max-width: 500px;
+}
+
+.demo-message {
+    text-align: center;
+}
+
+.demo-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.demo-message h4 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+.demo-message p {
+    font-size: 1rem;
+    color: #a0a0a0;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.demo-alternatives {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.demo-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background: #2a2a2a;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-decoration: none;
+    color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.demo-link:hover {
+    background: #333333;
+    border-color: rgba(55, 190, 253, 0.3);
+    transform: translateY(-2px);
+}
+
+.link-icon {
+    font-size: 1.5rem;
+    min-width: 24px;
+}
+
+.demo-link span:not(.link-icon) {
+    font-weight: 500;
 }
 
 /* Touch improvements for mobile */
